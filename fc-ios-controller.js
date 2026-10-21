@@ -12,7 +12,7 @@ export function initFcIosController(opts = {}) {
   const buttonMap = {
     "fc-btn-a": ["KeyZ", "Space"],
     "fc-btn-b": ["KeyX"],
-    "fc-btn-select": ["KeyShift"],
+    "fc-btn-select": ["ShiftLeft"],
     "fc-btn-start": ["Enter"],
     ...opts.buttons,
   };
@@ -85,6 +85,7 @@ export function initFcIosController(opts = {}) {
       dpadEl.classList.toggle("pressed", up || down || left || right);
     }
     emit();
+    if ((up || down || left || right) && navigator.vibrate) navigator.vibrate(8);
     if (up || down || left || right) opts.onPress?.("fc-dpad");
   }
 
@@ -101,9 +102,6 @@ export function initFcIosController(opts = {}) {
       return;
     }
     setDpad(dy < -thr, dy > thr, dx < -thr, dx > thr);
-    if (navigator.vibrate && (K.ArrowUp || K.ArrowDown || K.ArrowLeft || K.ArrowRight)) {
-      navigator.vibrate(8);
-    }
   }
 
   if (dpadWrap) {
